@@ -36,11 +36,6 @@ public class AddressBookController {
         daoimplement = new AddressBookDAOImplementation();
         view =new AddressBookMainGUI("View");  
     }
-     
-    
-     
-    
-     
     public void control(){
         loadPersons();
         actionListener = new ActionListener() {
@@ -58,12 +53,16 @@ public class AddressBookController {
                     openEdit();
                 else if(e.getSource() == view.getDelete())
                     openDelete();
+                else if(e.getSource() == view.getSearch())
+                    openSearch();
             }
         };
         
         view.getAdd().addActionListener(actionListener);
         view.getDelete().addActionListener(actionListener);
         view.getEdit().addActionListener(actionListener);
+         view.getSearch().addActionListener(actionListener);
+      
       
     }
     
@@ -83,13 +82,13 @@ public class AddressBookController {
             String name = contactDetailsPanel.getNameField().getText();
             String mobile = contactDetailsPanel.getMobileField().getText();
             String email = contactDetailsPanel.geteMailField().getText();
-            String address;
-                address = contactDetailsPanel.getAddressField().getText();
+            String address = contactDetailsPanel.getAddressField().getText();
+            String pincode = contactDetailsPanel.getPincodeField().getText();
             flag = validate();
             if(flag)
             {    
              Person person = new Person();
-             person.setData(name,mobile,email,address);
+             person.setData(name,mobile,email,address,pincode);
              daoimplement.addPerson(person);
              dialog.getFrame().dispose();
              view.getMainGUIFrame().setVisible(true);
@@ -134,11 +133,7 @@ public class AddressBookController {
              }
               loadPersons();
         }
-     
-   */
-    
-    
-    
+    /*
      /**
      *validates that mobile field and name are not empty
      * @return
@@ -147,10 +142,30 @@ public class AddressBookController {
         boolean valid = false;
         String name = contactDetailsPanel.getNameField().getText();
         String mobile = contactDetailsPanel.getMobileField().getText();
-        if (name==null||name.equals("")||(mobile==null||mobile.equals("")))
+        String address=contactDetailsPanel.getAddressField().getText();
+        long phone;
+        if (name==null||name.equals(""))
             JOptionPane.showMessageDialog(new JFrame(), "Fields Marked as * are Mandatory","Inane error", JOptionPane.ERROR_MESSAGE);
-        else 
+        else if (mobile==null||mobile.equals(""))
+            JOptionPane.showMessageDialog(new JFrame(), "Enter your Phone number and Try Again","Inane error", JOptionPane.ERROR_MESSAGE);
+        else if ((mobile.length()>10))
+        {
+            try
+            {
+                System.out.println("Please Check Your Mobile Number");
+                phone=Long.parseLong(mobile);
+            }
+            catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(new JFrame(), "Only Accept 10 digit number","Inane error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+            
+        else if (address==null||address.equals(""))
+            JOptionPane.showMessageDialog(new JFrame(), "Enter your Address and Try Again","Inane error", JOptionPane.ERROR_MESSAGE);
             valid = true;
+            
         return valid;
                
     }
@@ -161,8 +176,11 @@ public class AddressBookController {
         dialog.getPanel().setName(detailPanel.getNameField().getText());
         dialog.getPanel().setMobile(detailPanel.getMobileField().getText());
         dialog.getPanel().seteMail(detailPanel.geteMailField().getText());
+         dialog.getPanel().setAddress(detailPanel.getAddressField().getText());
+          dialog.getPanel().setPincode(detailPanel.getPincodeField().getText());
         view.getMainGUIFrame().setVisible(false);
         choiceListener = new ActionListener() {
+            private String pincode;
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource()== dialog.getSubmitButton())
@@ -172,12 +190,13 @@ public class AddressBookController {
                 String name = contactDetailsPanel.getNameField().getText();
                 String mobile = contactDetailsPanel.getMobileField().getText();
                 String email = contactDetailsPanel.geteMailField().getText();
-                String address = contactDetailsPanel.getAddressField().getText();
+                String address=contactDetailsPanel.getAddressField().getText();
+                String pincode=contactDetailsPanel.getPincodeField().getText();
                 flag = validate();
                 if(flag)
                 {    
                 Person person = new Person();
-                person.setData(name,mobile,email,address);
+                person.setData(name,mobile,email,address,pincode);
                 daoimplement.updatePerson(person,originalName);
                 dialog.getFrame().dispose();
                 view.getMainGUIFrame().setVisible(true);
@@ -239,6 +258,8 @@ public class AddressBookController {
          detailPanel.getMobileField().setEditable(false);
          detailPanel.geteMailField().setEditable(false);
          detailPanel.getAddressField().setEditable(false);
+           
+                 detailPanel.getPincodeField().setEditable(false);
         }
     }  //loadPersons ends
     

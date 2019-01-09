@@ -33,6 +33,7 @@ public class AddressBookMainGUI {
     private JButton btn_add;
     private JButton btn_edit;
     private JButton btn_delete;
+    private JButton btn_search;
     private JPanel panel_btn;
     
     
@@ -87,6 +88,9 @@ public class AddressBookMainGUI {
         
         btn_delete = new JButton("Delete");
         panel_btn.add(btn_delete);
+         
+        btn_search = new JButton("Search");
+        panel_btn.add(btn_search);
         
         frame.getContentPane().add(panel_btn,BorderLayout.SOUTH);
     }
@@ -128,6 +132,10 @@ public class AddressBookMainGUI {
     
     public JButton getDelete(){
         return btn_delete;
+    }
+    
+    public JButton getSearch(){
+        return btn_search;
     }
     public void setText(String text){
        // label.setText(text);

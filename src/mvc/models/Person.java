@@ -13,6 +13,7 @@ public class Person {
     private String mob;
     private String email;
     private String address;
+    private String pincode;
     
     
    /* public User(){
@@ -44,16 +45,25 @@ public class Person {
     public String getEmail(){
         return this.email; 
    }
+    
+    public String getPincode(){
+        return this.pincode;
+    }
     public String getAddress(){
         return this.address;
     }
     
-    public void setData(String name, String mob,String email,String address){
+    public void setData(String name, String mob,String email,String address,String pincode){
         this.name = name;
         this.mob = mob;
         this.email = email;
         this.address= address;
+        this.pincode=pincode;
     }
+
+    
+
+   
     
  
 
